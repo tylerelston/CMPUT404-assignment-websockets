@@ -17,6 +17,12 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+References
+=======
+Referenced socket implementation in https://github.com/uofa-cmput404/cmput404-slides/tree/master/examples/WebSocketsExamples - license'd by Abram Hindle. 
+
+Referenced XMLHttpRequest code snippets in https://github.com/abramhindle/CMPUT404-AJAX-Slides/blob/master/ObserverExample/ - license'd by Abram Hindle. 
+
 Contributors / Licensing
 ========================
 
