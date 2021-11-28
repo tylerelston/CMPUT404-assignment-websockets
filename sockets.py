@@ -150,7 +150,7 @@ def update(entity):
     e = {'entity':entity,
          'data':e}
     e = json.dumps(e)
-    send_all(world())
+    send_all(e)
     return e
 
 @app.route("/world", methods=['POST','GET'])    
