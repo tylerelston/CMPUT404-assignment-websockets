@@ -115,7 +115,7 @@ def subscribe_socket(ws):
     client = Client()
     clients.append(client)
     g = gevent.spawn( read_ws, ws, client )    
-    
+    print('SUB')
     for e in myWorld.world():
         msg = {'entity': e,
                'data': myWorld.get(e)}
