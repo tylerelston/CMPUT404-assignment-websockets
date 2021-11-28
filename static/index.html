@@ -172,6 +172,8 @@
 
                 }
             }
+            socket.send( JSON.stringify( {'entity':entity,
+                                            'data':data} ) );
             sendJSONXMLHTTPRequest('/entity/' + entity, obj, null);
         }
         var counter = 0;
