@@ -1,6 +1,8 @@
 CMPUT404-assignment-websockets
 ==============================
 
+NOTE: I had to downgrade Flask to 1.1.2 and Werkzeug to 1.0.1 to be able to run sockets.py
+
 CMPUT404-assignment-websockets
 
 See requirements.org (plain-text) for a description of the project.
