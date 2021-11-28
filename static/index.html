@@ -316,19 +316,6 @@
             socket.onopen = function (msg) {
                 //XXX: TODO What are you going to do here?
                 debug("Connection opened with " + url);
-
-                let obj = {
-                'method': 'GET',
-                "success": function (text) {
-                        let objs = JSON.parse(text);
-                        for (var key in objs) {
-                            world[key] = objs[key];
-                        }
-                        drawNextFrame();
-                    }
-                }
-
-                sendJSONXMLHTTPRequest('/world', obj, null);
             };
             socket.onerror = function (msg) {
                 debug("WebSocket Error:" + msg.data);
@@ -337,7 +324,7 @@
                 try {
                     debug("WebSocket Recv:" + msg.data);
                     //XXX: TODO What are you going to do here?            
-                    var message = JSON.parse(JSON.parse(msg.data));
+                    var message = JSON.parse(msg.data);
                     console.log(message);
                     world[message['entity']] = message['data'];
                     drawNextFrame();

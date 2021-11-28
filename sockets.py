@@ -115,6 +115,13 @@ def subscribe_socket(ws):
     client = Client()
     clients.append(client)
     g = gevent.spawn( read_ws, ws, client )    
+    
+    for e in myWorld.world():
+        msg = {'entity': e,
+               'data': myWorld.get(e)}
+        msg = json.dumps(msg)
+        client.put(msg)
+    
     try:
         while True:
             # block here
@@ -149,7 +156,6 @@ def update(entity):
     e = myWorld.get(entity)
     e = {'entity':entity,
          'data':e}
-    e = json.dumps(e)
     send_all(e)
     return e
 
