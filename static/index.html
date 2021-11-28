@@ -25,7 +25,6 @@
 
     <script>
         // Fix me
-        
         var canvas = document.getElementById('c');
         var host = window.location.host;
         var context = canvas.getContext("2d");
@@ -132,6 +131,8 @@
             data['colour'] = colour;
             world[entity] = data;
             drawNextFrame(); // (but should we?)
+            //XXX: Send a XHTML Request that updates the entity you just modified!
+
             socket.send( JSON.stringify( {'entity':entity,
                                             'data':data} ) );
         }

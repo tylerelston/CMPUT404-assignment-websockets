@@ -84,8 +84,6 @@ def set_listener( entity, data ):
     ''' do something with the update ! '''
     print(entity)
     print(data)
-    # e = {'entity':entity, 'data':data}
-    # send_all(e)
 
 myWorld.add_set_listener( set_listener )
         
@@ -103,8 +101,6 @@ def read_ws(ws,client):
             if (msg is not None):
                 packet = json.loads(msg)
                 send_all( packet )
-                myWorld.set(packet['entity'], packet['data'])
-                
             else:
                 break
     except:
@@ -125,6 +121,7 @@ def subscribe_socket(ws):
                'data': myWorld.get(e)}
         msg = json.dumps(msg)
         client.put(msg)
+    
     try:
         while True:
             # block here
@@ -135,6 +132,7 @@ def subscribe_socket(ws):
     finally:
         clients.remove(client)
         gevent.kill(g)
+    print('SUB')
     return None
 
 
@@ -158,7 +156,6 @@ def update(entity):
     e = myWorld.get(entity)
     e = {'entity':entity,
          'data':e}
-    e = json.dumps(e)
     send_all(e)
     return e
 
