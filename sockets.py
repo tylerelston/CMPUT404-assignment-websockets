@@ -82,8 +82,8 @@ def send_all(obj):
 
 def set_listener( entity, data ):
     ''' do something with the update ! '''
-    print(entity)
-    print(data)
+    e = {'entity':entity, 'data':data}
+    send_all(e)
 
 myWorld.add_set_listener( set_listener )
         
@@ -100,7 +100,8 @@ def read_ws(ws,client):
             print("WS RECV: %s" % msg)
             if (msg is not None):
                 packet = json.loads(msg)
-                send_all( packet )
+                myWorld.set(packet['entity'], packet['data'])
+                
             else:
                 break
     except:
@@ -115,6 +116,12 @@ def subscribe_socket(ws):
     client = Client()
     clients.append(client)
     g = gevent.spawn( read_ws, ws, client )    
+    
+    for e in myWorld.world():
+        msg = {'entity': e,
+               'data': myWorld.get(e)}
+        msg = json.dumps(msg)
+        client.put(msg)
     try:
         while True:
             # block here
@@ -125,7 +132,6 @@ def subscribe_socket(ws):
     finally:
         clients.remove(client)
         gevent.kill(g)
-    print('SUB')
     return None
 
 

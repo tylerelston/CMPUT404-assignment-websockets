@@ -25,38 +25,7 @@
 
     <script>
         // Fix me
-
-        function sendJSONXMLHTTPRequest(url, objects, callback) {
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
-                    try {
-                        if (xhr.status == 200) {
-                            //XXX: parse some JSON from the request!
-                            //XXX: Pass the data to the callback!
-                            console.log();
-                            objects['success'](xhr.responseText);
-                        }
-                    } catch (e) {
-                        alert('Error: ' + e.name);
-                    }
-                }
-            };
-            //XXX: POST to a URL
-            xhr.open(objects['method'], url);
-
-            //XXX: set the mimetype and the accept headers!
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader('Accept', "application/json");
-            // Remember to use application/json !
-            if (objects["body"]) {
-                let body = JSON.stringify(objects['body']);
-                xhr.send(body);
-            } else {
-                xhr.send();
-            }
-        }
-
+        
         var canvas = document.getElementById('c');
         var host = window.location.host;
         var context = canvas.getContext("2d");
@@ -163,16 +132,8 @@
             data['colour'] = colour;
             world[entity] = data;
             drawNextFrame(); // (but should we?)
-            //XXX: Send a XHTML Request that updates the entity you just modified!
-
-            let obj = {
-                'method': 'POST',
-                'body': data,
-                "success": function (text) {
-
-                }
-            }
-            sendJSONXMLHTTPRequest('/entity/' + entity, obj, null);
+            socket.send( JSON.stringify( {'entity':entity,
+                                            'data':data} ) );
         }
         var counter = 0;
 
@@ -316,19 +277,6 @@
             socket.onopen = function (msg) {
                 //XXX: TODO What are you going to do here?
                 debug("Connection opened with " + url);
-
-                let obj = {
-                'method': 'GET',
-                "success": function (text) {
-                        let objs = JSON.parse(text);
-                        for (var key in objs) {
-                            world[key] = objs[key];
-                        }
-                        drawNextFrame();
-                    }
-                }
-
-                sendJSONXMLHTTPRequest('/world', obj, null);
             };
             socket.onerror = function (msg) {
                 debug("WebSocket Error:" + msg.data);
@@ -337,7 +285,7 @@
                 try {
                     debug("WebSocket Recv:" + msg.data);
                     //XXX: TODO What are you going to do here?            
-                    var message = JSON.parse(JSON.parse(msg.data));
+                    var message = JSON.parse(msg.data);
                     console.log(message);
                     world[message['entity']] = message['data'];
                     drawNextFrame();
